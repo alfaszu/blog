@@ -7,16 +7,16 @@
 class SLIRConfig {
 
 	public static $browserCacheTTL = 315360000; // 10 years = 365 * 24 * 60 * 60 * 10
-	public static $useRequestCache = TRUE;
 	public static $copyEXIF	= FALSE;
 	public static $maxMemoryToAllocate = 100;
 	public static $defaultQuality	= 90;
 	public static $defaultCropper	= SLIR::CROP_CLASS_CENTERED;
+	//public static $defaultCropper	= SLIR::CROP_CLASS_SMART;
 	public static $defaultProgressiveJPEG	= TRUE;
 	public static $logErrors = TRUE;
 	public static $errorImages = TRUE;
 	public static $documentRoot	= '../../..';
-	public static $SLIRDir = 'render';
+	public static $SLIRDir = '/render/';
 	//public static $cacheDirName	= '/cache';
 	public static $cacheDir	= '../../../_cache/images';
 	public static $errorLogPath	= NULL;
@@ -50,15 +50,6 @@ class SLIRConfig {
 					// copy ICC color profile
 					if(isset($user_config["back"]["image_resizer"]["copy_icc_profile"]) && 
 						is_bool($user_config["back"]["image_resizer"]["copy_icc_profile"])) self::$copyICCProfile = $user_config["back"]["image_resizer"]["copy_icc_profile"];
-
-					// use request cache
-					if((defined('PHP_OS') && (stripos(PHP_OS, 'win') === 0 || stripos(PHP_OS, 'CYGWIN_NT') !== false)) || stripos($_SERVER['SERVER_SOFTWARE'], 'iis') !== false) {
-						self::$useRequestCache = FALSE;
-					} else if(isset($user_config["back"]["image_resizer"]["use_request_cache"])){
-						self::$useRequestCache = $user_config["back"]["image_resizer"]["use_request_cache"];
-					}
-					/*if(isset($user_config["back"]["image_resizer"]["use_request_cache"]) && 
-						is_bool($user_config["back"]["image_resizer"]["use_request_cache"])) self::$useRequestCache = $user_config["back"]["image_resizer"]["use_request_cache"];*/
 				}
 			}
 		}

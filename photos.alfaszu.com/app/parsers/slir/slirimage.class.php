@@ -327,6 +327,12 @@ class SLIRImage
 			return FALSE;
 		}
 	}
+
+	// X3 custom
+	final public function isWEBP()
+	{
+		return $this->mime == 'image/webp' ? TRUE : FALSE;
+	}
 	
 	/**
 	 * @since 2.0
@@ -334,7 +340,7 @@ class SLIRImage
 	 */
 	final public function isAbleToHaveTransparency()
 	{
-		if ($this->isPNG() || $this->isGIF())
+		if ($this->isPNG() || $this->isGIF() || $this->isWEBP())
 		{
 			return TRUE;
 		}
@@ -447,6 +453,10 @@ class SLIRImage
 		else if ($this->isPNG())
 		{
 			$this->image	= ImageCreateFromPng($this->fullPath());
+		}
+		else if ($this->isWEBP())
+		{
+			$this->image	= imagecreatefromwebp($this->fullPath());
 		}
 	}
 	
@@ -569,7 +579,6 @@ class SLIRImage
 		{
 			return TRUE;
 		}
-		
 		$cropper	= $this->getCropperClass();
 		$offset		= $cropper->getCrop($this);
 		return $this->cropImage($offset['x'], $offset['y'], $isBackgroundFillOn);
@@ -690,7 +699,7 @@ class SLIRImage
 	 */
 	private function output($filename = NULL)
 	{
-		if ($this->isJPEG())
+		if ($this->isJPEG() || $this->isWEBP())
 		{
 			return imagejpeg($this->image, $filename, $this->quality);
 		}		
@@ -701,7 +710,7 @@ class SLIRImage
 		else if ($this->isGIF())
 		{
 			return imagegif($this->image, $filename, $this->quality);
-		}			
+		}		
 		else
 		{
 			return FALSE;
